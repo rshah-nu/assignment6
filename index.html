@@ -5,11 +5,43 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Assignment 6</title>
+        <!-- Import Bootstrap -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <!-- Import Custom CSS -->
         <link rel="stylesheet" href="assets/css/style.css">
     </head>
     <body>
-        
+        <div class="container">
+            <div class="jumbotron">
+                <h1 class="text-center">Giphy API Search</h1>
+            </div>
+            <!-- Row 1 for buttons -->
+            <div class="row">
+                <div class="col-lg-12 btnRow">
+                </div>
+            </div>
+            <!-- Row 2 for Search Bar -->
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <form>
+                       <input type="search" name="gifSearch" id="gifSearch">
+                       <button type="submit" id="gifSubmit">Search</button>
+                    </form>
+                </div>
+            </div>
+            <!-- Row 3 for GIFs -->
+            <div class="row">
+                <div class="col-lg-12">
+                </div>
+            </div>
+        </div>
+        <!-- EVERYTHING INSIDE THIS DIV! -->
 
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <!-- Bootstrap JS library -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <!-- Link JS -->
         <script src="assets/js/app.js"></script>
     </body>
 </html>
