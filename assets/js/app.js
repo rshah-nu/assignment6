@@ -41,9 +41,10 @@ $("#gifSubmit").on("click", function(e){
     var userInput = $("#gifSearch").val();
     // Validate to ensure user input is not empty, empty values return false
     if (userInput) {
-        // Validate that the user hasn't entered a DUPLICATE entry, lowerCaseArray is used here because you don't want user to mix case just to try to screw with you
+        // Validate that the user hasn't entered a DUPLICATE entry, lowerCaseArray is used here because you don't want user to mix case 
+        // just to try to screw with you ...mike, ...peter
         if (lowerCaseButtons.includes(userInput.toLowerCase())) {
-            console.log("Sorry, the array already contained that particular string!");
+            // TO-DO: Add item to page that shows array already contains item;
             // Reset search field to empty
             $("#gifSearch").val('');
         }
@@ -61,12 +62,34 @@ $("#gifSubmit").on("click", function(e){
     }
     // If user string is empty
     else{
-        console.log("Your string was empty, yo.");
+        // TO-DO: Add item to page that shows user didn't enter anything
     }
 });
-// Get whatever button user clicked on 
 
-// Call Giphy API
+// Function which retrieves data-btnData attribute from whatever button the user pressed and passes it on to the API call fxn
+$(document.body).on("click", ".gifButtons", function(){
+    // Set the value of the data-btndata key to a variable for future use
+    var yourChoice = $(this).attr("data-btnData");
+    // Call the API passing the value of whatever button you clicked on
+    apiCall(yourChoice);
+});
 
-// Print GIFs to page
+// Call Giphy API, print images to page
+function apiCall(yourChoice){
+    var apiKey = "dc6zaTOxFJmzC";
+    var URL= "http://api.giphy.com/v1/gifs/search?api_key=" + apiKey + "&q=" + yourChoice + "&limit=10";
+    console.log(URL);
+    $.getJSON(URL, function(data){
+        
+    });
+}
 
+// function printToPage(data){
+
+//     var myImg = $("<img>")
+//     myImg.attr("src", "")
+//     var myMainDiv = $("<div>");
+//     myMainDiv.addClass("col-lg-6 panel panel-default");
+//     myMainDiv.append()
+//     $("#gifRow")
+// }
