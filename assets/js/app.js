@@ -13,7 +13,8 @@ function lowerCaseArray(){
 
 // Only time this function is needed, probably don't need to have it in a function but... whatever, maybe I'll need it again for whatever reason
 lowerCaseArray();
-
+//Call buttonGen function for initial button generation
+buttonGen();
 // Generate buttons to page
 function buttonGen() {
     // Empty existing content from btnRow to avoid constant duplications
@@ -72,24 +73,83 @@ $(document.body).on("click", ".gifButtons", function(){
     var yourChoice = $(this).attr("data-btnData");
     // Call the API passing the value of whatever button you clicked on
     apiCall(yourChoice);
+    $(".gifRow").empty();
 });
 
 // Call Giphy API, print images to page
 function apiCall(yourChoice){
+    // API Key from NU Bootcamp
     var apiKey = "dc6zaTOxFJmzC";
+    // Construct query URL, using paramaters apiKey, q=search term, and limit= how many results you want returned
     var URL= "http://api.giphy.com/v1/gifs/search?api_key=" + apiKey + "&q=" + yourChoice + "&limit=10";
-    console.log(URL);
-    $.getJSON(URL, function(data){
-        
+    // getJSON, similar to .ajax, but simpler  
+    $.getJSON(URL, function(response){
+        // Iterate over entire response object 
+        for (var index = 0; index < response.data.length; index++) {
+            // Get still URL, fixed_height, see API docs 
+            var stillURL = response.data[index].images["fixed_height_still"].url;
+            // get full movement GIF URL, fixed_height, see API docs 
+            var gifURL = response.data[index].images["fixed_height"].url;
+            // get rating, see API docs 
+            var rating = response.data[index].rating;
+            // Pass above variables to print the images and rating to the page
+            printToPage(stillURL, gifURL, rating);
+        };
     });
-}
+};
 
-// function printToPage(data){
+// Function which prints images, ratings to a bootstrap panel element  
+// This is a super long function.... probably a way to make it more concise? 
+function printToPage(stillURL, gifURL, rating){
+    // create new image element using jQuery 
+    var myImg = $("<img>");
+    // set the initial source to stillURL, will be changed on click
+    myImg.attr("src", stillURL);
+    // set classes, center-block centers image within panel
+    myImg.addClass("gifImg center-block");
+    // Store the full movement GIF URL as a data attribute so it can easily be accessed in future on click to change source
+    myImg.attr("data-imgMove", gifURL);
+    // Store the still URL as a data attribute so we can access it in future
+    myImg.attr("data-imgStill", stillURL)
+    // Initial status is still, therefore set value of curStatus key to still, will change on click
+    myImg.attr("data-curStatus", "still");
+    // Create a div to hold panel
+    var myPanel = $("<div>");
+    // Bootstrap panel attributes, col-lg-6 allows 2 each panels / row
+    myPanel.addClass("panel panel-default gifPanel col-lg-6");
+    // create a div to hold panel body, see bootstrap docs 
+    var panelBody = $("<div>");
+    // Assign panel-body class, see bootstrap docs
+    panelBody.addClass("panel-body");
+    // ADD the image into the panel body
+    panelBody.append(myImg);
+    // Create Panel Footer which will hold the rating
+    var panelFooter = $("<div>");
+    // Add panel footer and text-center classes to footer, see bootstrap docs
+    panelFooter.addClass("panel-footer text-center");
+    //Add the rating to the panel-footer, ideally make the rating bold, possibly add span element in future
+    panelFooter.text("Rating: " + rating);
+    // append panelBody (which contains image) to the panel container (see Bootstrap docs)
+    myPanel.append(panelBody);
+    // append panelFooter (which contains rating) to panel container (see bootstrap docs)
+    myPanel.append(panelFooter);
+    //Finaally, append the finished panel to the DOM
+    $(".gifRow").append(myPanel);
+};
 
-//     var myImg = $("<img>")
-//     myImg.attr("src", "")
-//     var myMainDiv = $("<div>");
-//     myMainDiv.addClass("col-lg-6 panel panel-default");
-//     myMainDiv.append()
-//     $("#gifRow")
-// }
+// Function which looks for on clicks of GIF Images only
+$(document.body).on("click", ".gifImg", function(e){
+    // IF image is not moving (still), change source to movement URL and update status to moving 
+    if ($(this).attr("data-curStatus") == "still") {
+        $(this).attr("src", $(this).attr("data-imgMove"));
+        $(this).attr("data-curStatus", "move");
+    }
+    // If image IS moving, make source the still URL and update status to still 
+    else{
+        $(this).attr("src", $(this).attr("data-imgStill"));
+        $(this).attr("data-curStatus", "still");        
+    }
+});
+
+
+
