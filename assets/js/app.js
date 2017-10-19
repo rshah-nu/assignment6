@@ -73,6 +73,7 @@ $(document.body).on("click", ".gifButtons", function(){
     var yourChoice = $(this).attr("data-btnData");
     // Call the API passing the value of whatever button you clicked on
     apiCall(yourChoice);
+    // Empty the GIFs on the page
     $(".gifRow").empty();
 });
 
